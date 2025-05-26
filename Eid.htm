@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>عيد الأضحى المبارك</title>
+<title>عيد الأضحى - تهنئة وأضواء</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700&display=swap" rel="stylesheet">
 
@@ -19,8 +19,13 @@
     align-items: center;
     flex-direction: column;
     user-select: none;
-    animation: bgGradient 20s linear infinite;
+    animation: none; /* إيقاف حركة الخلفية على الموبايل */
     transition: background 2s ease;
+  }
+  @media (min-width: 769px) {
+    body, html {
+      animation: bgGradient 20s linear infinite;
+    }
   }
   @keyframes bgGradient {
     0% {background-position: 0% 50%;}
@@ -44,9 +49,8 @@
     font-weight: 700;
     text-align: center;
     text-shadow:
-      0 0 10px #ffd700,
-      0 0 20px #ffb800,
-      0 0 30px #ffda44;
+      0 0 8px #ffd700,
+      0 0 15px #ffb800;
     animation: glow 2.5s ease-in-out infinite alternate,
                floatUpDown 3s ease-in-out infinite;
     margin-bottom: 1rem;
@@ -54,9 +58,8 @@
   }
   .message:hover {
     text-shadow:
-      0 0 15px #ffea00,
-      0 0 30px #ffe000,
-      0 0 45px #fff44f;
+      0 0 10px #ffea00,
+      0 0 20px #ffe000;
     transform: scale(1.05);
     transition: all 0.3s ease;
   }
@@ -64,14 +67,12 @@
     from {
       text-shadow:
         0 0 6px #ffd700,
-        0 0 15px #ffb800,
-        0 0 25px #ffda44;
+        0 0 12px #ffb800;
     }
     to {
       text-shadow:
-        0 0 18px #ffd700,
-        0 0 30px #ffb800,
-        0 0 40px #ffda44;
+        0 0 12px #ffd700,
+        0 0 20px #ffb800;
     }
   }
   @keyframes floatUpDown {
@@ -93,32 +94,32 @@
     animation: floatUpDown 3s ease-in-out infinite;
     margin-bottom: 20px;
   }
-  
+
   .timer {
-  position: relative;
-  z-index: 5;
-  font-size: 1.8rem;
-  color: #ffd700;
-  font-weight: 600;
-  text-shadow: 0 0 8px #ffd700cc;
-  animation: glow 2.5s ease-in-out infinite alternate,
-             floatUpDown 3s ease-in-out infinite;
-  margin-bottom: 20px;
-  text-align: center;
-  cursor: default;
-}
-.timer:hover {
-  text-shadow: 0 0 12px #ffea00,
-               0 0 24px #ffe000,
-               0 0 36px #fff44f;
-  transform: scale(1.05);
-  transition: all 0.3s ease;
-}
-#countdown {
-  font-family: monospace; 
-  color: #fff;
-  text-shadow: 0 0 8px #ffffffcc;
-}
+    position: relative;
+    z-index: 5;
+    font-size: 1.8rem;
+    color: #ffd700;
+    font-weight: 600;
+    text-shadow: 0 0 8px #ffd700cc;
+    animation: glow 2.5s ease-in-out infinite alternate,
+               floatUpDown 3s ease-in-out infinite;
+    margin-bottom: 20px;
+    text-align: center;
+    cursor: default;
+  }
+  .timer:hover {
+    text-shadow:
+      0 0 10px #ffea00,
+      0 0 20px #ffe000;
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+  }
+  #countdown {
+    font-family: monospace;
+    color: #fff;
+    text-shadow: 0 0 8px #ffffffcc;
+  }
 
   footer {
     position: fixed;
@@ -162,7 +163,6 @@
     top: 108px;
   }
 
-  /* بريق Sparkle */
   .sparkle {
     position: absolute;
     background: radial-gradient(circle, #ffd700 0%, transparent 70%);
@@ -188,13 +188,14 @@
 <div class="message" id="message">✨ كل عام وأنتم بخير ✨</div>
 <div class="submessage">بمناسبة عيد الأضحى المبارك 🌙</div>
 <div class="timer" id="timer">الوقت المتبقي لعيد الأضحى: <span id="countdown">...</span></div>
+
 <canvas id="canvas"></canvas>
 
-<button id="audioControl" title="تشغيل/إيقاف الصوت">كتم الصوت 🔇</button>
+<button id="audioControl" title="تشغيل/إيقاف الصوت">تشغيل الصوت 🔊</button>
 <button id="shareBtn" title="شارك التهنئة">مشاركة 🎉</button>
 <button id="colorToggleBtn" title="تغيير لون الخلفية">تغيير لون الخلفية 🎨</button>
 
-<audio id="audio" autoplay loop muted playsinline>
+<audio id="audio" loop playsinline>
   <source src="https://j.top4top.io/m_3433052mw1.mp3" type="audio/mpeg" />
   متصفحك لا يدعم تشغيل الصوت.
 </audio>
@@ -213,18 +214,20 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
+const isMobile = window.innerWidth <= 768;
+
 class Particle {
   constructor() {
     this.reset();
   }
   reset() {
     this.x = Math.random() * cw;
-    this.y = ch + Math.random() * 100; 
-    this.size = Math.random() * 3 + 1; 
-    this.speedY = Math.random() * 0.5 + 0.2; 
-    this.speedX = (Math.random() - 0.5) * 0.3; 
+    this.y = ch + Math.random() * 100;
+    this.size = Math.random() * 3 + 1;
+    this.speedY = Math.random() * 0.5 + 0.2;
+    this.speedX = (Math.random() - 0.5) * 0.3;
     this.opacity = Math.random() * 0.5 + 0.3;
-    this.color = `rgba(255, 215, 0, ${this.opacity})`; 
+    this.color = `rgba(255, 215, 0, ${this.opacity})`;
   }
   update() {
     this.y -= this.speedY;
@@ -244,7 +247,7 @@ class Particle {
 }
 
 const particles = [];
-const maxParticles = 90; 
+const maxParticles = isMobile ? 50 : 90;
 for (let i = 0; i < maxParticles; i++) particles.push(new Particle());
 
 class Bubble {
@@ -271,7 +274,7 @@ class Bubble {
 }
 
 const bubbles = [];
-const maxBubbles = 60;
+const maxBubbles = isMobile ? 30 : 60;
 for(let i=0; i < maxBubbles; i++) bubbles.push(new Bubble());
 
 class Star {
@@ -280,7 +283,7 @@ class Star {
   }
   reset() {
     this.x = Math.random() * cw;
-    this.y = Math.random() * ch * 0.5; 
+    this.y = Math.random() * ch * 0.5;
     this.size = Math.random() * 1.5 + 0.5;
     this.opacity = Math.random();
     this.opacitySpeed = (Math.random()*0.005) + 0.002;
@@ -298,7 +301,7 @@ class Star {
 }
 
 const stars = [];
-const maxStars = 40;
+const maxStars = isMobile ? 20 : 40;
 for(let i=0; i < maxStars; i++) stars.push(new Star());
 
 class Crescent {
@@ -334,7 +337,13 @@ class Crescent {
 
 const crescent = new Crescent();
 
-function animate() {
+let lastFrame = 0;
+function animate(timestamp) {
+  if (isMobile && timestamp - lastFrame < 33) {
+    requestAnimationFrame(animate);
+    return;
+  }
+  lastFrame = timestamp;
   ctx.clearRect(0, 0, cw, ch);
   particles.forEach(p => {
     p.update();
@@ -355,6 +364,8 @@ function animate() {
 animate();
 
 const messageEl = document.getElementById('message');
+const timerEl = document.getElementById('timer');
+const sparkleInterval = isMobile ? 600 : 400;
 
 function createSparkle() {
   const sparkle = document.createElement('div');
@@ -370,17 +381,29 @@ function createSparkle() {
   }, 1800);
 }
 
-setInterval(createSparkle, 400);
+function createTimerSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.classList.add('sparkle');
+  const size = Math.random() * 5 + 3;
+  sparkle.style.width = sparkle.style.height = `${size}px`;
+  sparkle.style.top = `${Math.random() * timerEl.clientHeight}px`;
+  sparkle.style.left = `${Math.random() * timerEl.clientWidth}px`;
+  timerEl.appendChild(sparkle);
 
+  setTimeout(() => {
+    sparkle.remove();
+  }, 1800);
+}
+
+setInterval(createSparkle, sparkleInterval);
+setInterval(createTimerSparkle, sparkleInterval);
 
 const audio = document.getElementById('audio');
 const audioControl = document.getElementById('audioControl');
-
-audioControl.textContent = 'كتم الصوت 🔇'; 
-audio.volume = 0.4; 
+audio.volume = 0.4;
 
 audioControl.addEventListener('click', () => {
-  if(audio.muted || audio.paused){
+  if (audio.paused) {
     audio.muted = false;
     audio.play();
     audioControl.textContent = 'إيقاف الصوت 🔊';
@@ -390,7 +413,6 @@ audioControl.addEventListener('click', () => {
     audioControl.textContent = 'تشغيل الصوت 🔊';
   }
 });
-
 
 const shareBtn = document.getElementById('shareBtn');
 shareBtn.addEventListener('click', () => {
@@ -404,7 +426,6 @@ shareBtn.addEventListener('click', () => {
     alert('متصفحك لا يدعم خاصية المشاركة.');
   }
 });
-
 
 const colorToggleBtn = document.getElementById('colorToggleBtn');
 const colors = [
@@ -422,9 +443,8 @@ colorToggleBtn.addEventListener('click', () => {
   document.body.style.background = colors[currentColor];
 });
 
-
 const countdownEl = document.getElementById('countdown');
-const eidDate = new Date('2025-06-06T00:00:00+03:00'); 
+const eidDate = new Date('2025-06-06T00:00:00+03:00');
 
 function updateCountdown() {
   const now = new Date();
@@ -445,24 +465,6 @@ function updateCountdown() {
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
-
-const timerEl = document.getElementById('timer');
-function createTimerSparkle() {
-  const sparkle = document.createElement('div');
-  sparkle.classList.add('sparkle');
-  const size = Math.random() * 5 + 3;
-  sparkle.style.width = sparkle.style.height = `${size}px`;
-  sparkle.style.top = `${Math.random() * timerEl.clientHeight}px`;
-  sparkle.style.left = `${Math.random() * timerEl.clientWidth}px`;
-  timerEl.appendChild(sparkle);
-
-  setTimeout(() => {
-    sparkle.remove();
-  }, 1800);
-}
-
-setInterval(createTimerSparkle, 400);
-
 </script>
 
 </body>
